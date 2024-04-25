@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
+       
     },
     imgUrl: {
         type: String,
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         default: 0,
     },
     tags: {
-        type: Array,
+        type: [String],
         default: [],
     },
     likes: {

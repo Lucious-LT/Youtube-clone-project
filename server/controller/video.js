@@ -5,7 +5,7 @@ import Video from "../models/Video.js"
 
 
 export const addVideo=async (req, res, next )=>{
-    const newVideo = new Video ({userId:req.user.id, ...req.body})
+    const newVideo = new Video({userId: req.user.id, ...req.body})
     try{
    const savedVideo = await newVideo.save()
    res.status(200).json(savedVideo)
@@ -22,18 +22,18 @@ export const addVideo=async (req, res, next )=>{
 export const updateVideo=async (req, res, next )=>{
 
   try{
-  const videoUpdate= await new videoUpdate.findById(req.params.id)
+  const videoUpdate= await  Video.findById(req.params.id)
   if(!videoUpdate)
       return next(createError(404, "Video not found"))
       if(req.user.id ===videoUpdate.userId ){
-        const updatedUser = await videoUpdate.findByIdAndUpdate(
+        const updatedUser = await Video.findByIdAndUpdate(
             req.params.id,
        {
         $set:req.body,
        },
        {new:true}
        );
-       res.status(200).jsn(updatedUser)
+       res.status(200).json(updatedUser)
     }
     else{
         return next(createError(403, "you can update only your video!!!!!!!!"))
@@ -80,7 +80,7 @@ export const getVideo=async (req, res, next )=>{
 export const addView=async (req, res, next )=>{
 
       try{
-        await video.findByIdAndUpdate(req.params.id,{
+        await Video.findByIdAndUpdate(req.params.id,{
          $inc:{views:1}
         })
         res.status(200).json("view added.")
@@ -113,10 +113,10 @@ export const trends =async (req, res, next )=>{
 export const sub = async (req, res, next )=>{
 
       try{
-        const user= await User.findById(req.user.id)
+        const user= await User.findById(req.user.Id)
         const subscribedChannels = user.subscribedUsers
 
-        const list = await Promise.all(
+        const list =  await Promise.all(
             subscribedChannels.map(channelId=>{
                 return Video.find({userId: channelId})
             })
